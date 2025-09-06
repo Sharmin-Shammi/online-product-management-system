@@ -11,7 +11,8 @@ Route::get('/', [HomeController::class, 'home']);
 Route::get('/dashboard', [HomeController::class, 'login_home'])->
 middleware(['auth', 'verified'])->name('dashboard');
 
-
+Route::get('/myorders', [HomeController::class, 'myorders'])->
+middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -83,3 +84,7 @@ require __DIR__.'/auth.php';
 
        Route::get('delivered/{id}', [AdminController::class, 'delivered'])->
        middleware(['auth','admin']);
+
+       Route::get('print_pdf/{id}', [AdminController::class, 'print_pdf'])->
+       middleware(['auth','admin']);
+

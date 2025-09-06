@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 USE App\Models\Category;
 USE App\Models\Order;
 USE App\Models\Product;
-use View;
+use Barryvdh\DomPDF\Facade\Pdf;
+
+
 
 class AdminController extends Controller
 {
@@ -128,6 +130,8 @@ public function view_order()
   $data = Order::all();
   return view('admin.order', compact('data'));
 }
+
+
 public function on_the_way($id)
 {
   $data = Order::find($id);
@@ -139,9 +143,15 @@ public function on_the_way($id)
 public function delivered($id)
 {
   $data = Order::find($id);
-  $data->Status = "Delivered";
+  $data->status = "Delivered";
   $data->save();
   toastr()->timeOut(5000)->closeButton()->addSuccess('Order status updated to Delivered!');
   return redirect('view_orders');
+}
+public function print_pdf($id)
+{
+    $data = Order::find($id);
+    $pdf = Pdf::loadView('admin.invoice', compact('data'));
+    return $pdf->download('invoice.pdf');
 }
 }

@@ -73,6 +73,15 @@
         background-color: #2f855a;
         transform: translateY(-2px);
       }
+
+      .btn-secondary {
+        background-color: #6c757d;
+      }
+
+      .btn-secondary:hover {
+        background-color: #495057;
+        transform: translateY(-2px);
+      }
       
       img {
         width: 80px;
@@ -118,80 +127,76 @@
     </style>
   </head>
   <body>
-  @include('admin.header')
+    @include('admin.header')
     @include('admin.sidebar')
-      <!-- Sidebar Navigation end-->
-      <div class="page-content">
-        <div class="page-header">
-          <div class="container-fluid">
-            <h1 style="color: white; text-align: center; margin-bottom: 30px;">Order Management</h1>
+
+    <div class="page-content">
+      <div class="page-header">
+        <div class="container-fluid">
+          <h1 style="color: white; text-align: center; margin-bottom: 30px;">Order Management</h1>
 
           <div class="table_center">
-          @if($data->count() > 0)
-          <table>
-          <tr>
-          <th>Customer Name</th>
-          <th>Address</th>
-          <th>Phone</th>
-          <th>Product Title</th>
-          <th>Price</th>
-          <th>Image</th>
-          <th>Status</th>
-          <th>Change Status</th>
-          <th>Print PDF</th>
-          </tr>
-          
-          @foreach ($data as $order)
-          <tr>
-            <td>{{ $order->name }}</td>
-            <td>{{ $order->rec_address }}</td>
-            <td>{{ $order->phone }}</td>
-            <td>{{ $order->product->title }}</td>
-            <td>${{ number_format($order->product->price, 2) }}</td>
-            <td>
-                <img src="/product/{{ $order->product->image }}" alt="{{ $order->product->title }}">
-            </td>
-            <td>
-              @if ($order->Status == 'in progress')
-                <span class="status-in-progress">In Progress</span>
-              @elseif($order->Status == 'On the way')
-                <span class="status-on-the-way">{{ $order->Status }}</span>
-              @elseif($order->Status == 'Delivered')
-                <span class="status-delivered">{{ $order->Status }}</span>
-              @else
-                <span style="color:yellow; font-weight: bold;">{{ $order->Status }}</span>
-              @endif
-            </td>
-            <td>
-              <a class="btn btn-primary" 
-              href="{{ url('on_the_way', $order->id) }}">
-                On the way
-              </a>
-              <a class="btn btn-success" 
-              href="{{ url('delivered', $order->id) }}">
-                Delivered
-              </a>
-            </td>
-            <td>
-              <a class="btn btn-secondary" 
-              href="{{ url('print_pdf', $data->id) }}">
-                Print PDF
-              </a>
-            </td>
-          </tr>
-          @endforeach
-          </table>
-          @else
-          <div class="empty-orders">
-            <p>No orders found.</p>
+            @if($data->count() > 0)
+            <table>
+              <tr>
+                <th>Customer Name</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Product Title</th>
+                <th>Price</th>
+                <th>Image</th>
+                <th>Status</th>
+                <th>Change Status</th>
+                <th>Print PDF</th>
+              </tr>
+              
+              @foreach ($data as $order)
+              <tr>
+                <td>{{ $order->name }}</td>
+                <td>{{ $order->rec_address }}</td>
+                <td>{{ $order->phone }}</td>
+                <td>{{ $order->product->title }}</td>
+                <td>${{ number_format($order->product->price, 2) }}</td>
+                <td>
+                  <img src="/product/{{ $order->product->image }}" alt="{{ $order->product->title }}">
+                </td>
+                <td>
+                  @if ($order->Status == 'in progress')
+                    <span class="status-in-progress">In Progress</span>
+                  @elseif($order->Status == 'On the way')
+                    <span class="status-on-the-way">{{ $order->Status }}</span>
+                  @elseif($order->Status == 'Delivered')
+                    <span class="status-delivered">{{ $order->Status }}</span>
+                  @else
+                    <span style="color:yellow; font-weight: bold;">{{ $order->Status }}</span>
+                  @endif
+                </td>
+                <td>
+                  <a class="btn btn-primary" href="{{ url('on_the_way', $order->id) }}">
+                    On the way
+                  </a>
+                  <a class="btn btn-success" href="{{ url('delivered', $order->id) }}">
+                    Delivered
+                  </a>
+                </td>
+                <td>
+                  <a class="btn btn-secondary" href="{{ url('print_pdf', $order->id) }}">
+                    Print PDF
+                  </a>
+                </td>
+              </tr>
+              @endforeach
+            </table>
+            @else
+            <div class="empty-orders">
+              <p>No orders found.</p>
+            </div>
+            @endif
           </div>
-          @endif
-          </div>
-          
-          </div>
+        </div>
       </div>
     </div>
-    <!-- JavaScript files-->
+
     @include('admin.js')
   </body>
 </html>
