@@ -76,7 +76,16 @@ require __DIR__.'/auth.php';
        Route::post('confirm_order', [HomeController::class, 'confirm_order'])->
        middleware(['auth','verified']);
 
-       Route::get('view_orders', [AdminController::class, 'view_order'])->
+
+       Route::controller(HomeController::class)->group(function(){
+
+    Route::get('stripe/{value}', 'stripe');
+
+    Route::post('stripe/{value}', 'stripePost')->name('stripe.post');
+
+});
+     
+Route::get('view_orders', [AdminController::class, 'view_order'])->
        middleware(['auth','admin']);
 
          Route::get('on_the_way/{id}', [AdminController::class, 'on_the_way'])->

@@ -7,7 +7,8 @@ use App\Models\Product;
 use App\Models\User;
 use App\Models\Cart;
 use App\Models\Order;
-
+use Stripe;
+use Session;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -143,6 +144,37 @@ public function myorders()
     $order=Order::where('user_id', $user)->get();
     return view('home.order', compact('user', 'count', 'order'));
 }
+ public function stripe($value)
 
+    {
+
+        return view('home.stripe', compact('value'));
+    }
+public function stripePost(Request $request,$value)
+
+    {
+
+        Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+    
+
+        Stripe\Charge::create ([
+
+                "amount" => $value * 100,
+
+                "currency" => "usd",
+
+                "source" => $request->stripeToken,
+
+                "description" => "Test payment completed" 
+
+        ]);
+
+        Session::flash('success', 'Payment successful!');
+        return back();
+
+    }
 }
+
+
 
